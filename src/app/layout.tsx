@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { notoSansKr } from "@/assets/fonts/font";
 import "@/styles/globals.css";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
+import QueryProvider from "@/components/layout/QueryProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "IVE 팬페이지",
@@ -14,7 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={notoSansKr.className}>{children}</body>
+      <body className={notoSansKr.className}>
+        <ToastContainer position="top-left" autoClose={1000} />
+        <Header />
+        <QueryProvider>{children}</QueryProvider>
+        <Footer />
+      </body>
     </html>
   );
 }

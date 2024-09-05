@@ -6,12 +6,14 @@ import S from "@/styles/common.module.scss";
 
 const Main = () => {
   return (
-    <main className={S.main}>
+    <>
       <MainTitle />
-      <LetterForm />
-      <LetterList />
-      <GoTopButton />
-    </main>
+      <main className={S.main}>
+        <LetterForm />
+        <LetterList />
+        <GoTopButton />
+      </main>
+    </>
   );
 };
 
