@@ -1,11 +1,21 @@
+import Link from "next/link";
 import Nav from "./Nav";
+import Image from "next/image";
+import Logo from "@/assets/images/logo.svg";
+import S from "@/styles/common.module.scss";
 
 const Header = () => {
   return (
-    <header>
-      <h1>로고</h1>
-      <Nav />
-    </header>
+    <div className={S.headerWrapper}>
+      <header className={S.header}>
+        <h1>
+          <Link href="/">
+            <Image src={Logo} alt="IVE logo" priority />
+          </Link>
+        </h1>
+        <Nav />
+      </header>
+    </div>
   );
 };
 
