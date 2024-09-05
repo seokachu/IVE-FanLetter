@@ -56,17 +56,14 @@
     text-align: center;
 
     div {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+
       a {
-        display: inline-block;
-        margin: 0 5px;
-        width: 30px;
-
         svg {
-          width: 30px;
-
-          path {
-            width: 30px;
-          }
+          width: 35px;
+          height: 35px;
         }
       }
     }
