@@ -19,24 +19,37 @@
     align-items: center;
     padding: 20px;
 
-    a {
-      display: block;
-      width: 100px;
+    h1 {
+      a {
+        display: block;
+        width: 100px;
 
-      img {
-        object-fit: cover;
-        width: inherit;
-        height: inherit;
+        img {
+          object-fit: cover;
+          width: inherit;
+          height: inherit;
+        }
       }
     }
-  }
 
-  .gnb {
-    display: flex;
+    .gnb {
+      ul {
+        display: flex;
+        gap: 10px;
+        align-items: center;
 
-    >ul {
-      display: flex;
-      gap: 10px;
+        li {
+          a:last-child {
+            width: 35px;
+
+            img {
+              object-fit: cover;
+              width: inherit;
+              height: inherit;
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Nav from "./Nav";
+import Nav from "../layout/Nav";
 import Image from "next/image";
 import Logo from "@/assets/images/logo.svg";
 import S from "@/styles/common.module.scss";
