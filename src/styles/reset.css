@@ -147,3 +147,9 @@ button {
   cursor: pointer;
   border: none;
 }
+
+img {
+  width: auto;
+  height: auto;
+  object-fit: cover;
+}

@@ -7,21 +7,27 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useId, useState } from "react";
 import { toast } from "react-toastify";
 import { useIsLoginActions } from "@/shared/store/toggleStore";
+import { useUserActions } from "@/shared/store/userStore";
 
 const Login = () => {
   const id = useId();
   const router = useRouter();
   const { setIsLoginMode } = useIsLoginActions();
+  const { setUserInfo } = useUserActions();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [avatar, setAvatar] = useState("");
 
   //로그인
   const onClickSignIn = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await login({ id: userId, password });
+    const response = await login({ id: userId, password, nickname, avatar });
     setIsLoginMode(true);
+    setUserInfo(response);
     toast.success("로그인 완료!");
     router.push("/");
+    console.log(response);
   };
 
   return (

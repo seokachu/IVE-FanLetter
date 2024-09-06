@@ -20,7 +20,7 @@ const Nav = () => {
 
   const [avatar, setAvatar] = useState(null);
 
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, isLoading } = useQuery({
     queryKey: ["userInfo"],
     queryFn: getUserInfo,
   });
@@ -46,6 +46,11 @@ const Nav = () => {
     router.push("/");
   };
 
+  if (isLoading) {
+    return <div>로딩중 </div>;
+  }
+  const avatarSrc = data?.avatar ?? DefaultAvatarImage;
+
   return (
     <nav className={S.gnb}>
       <ul>
@@ -53,25 +58,9 @@ const Nav = () => {
           <>
             <li>{data?.nickname}</li>
             <li>
-              {data.avatar ? (
-                <Link href="/mypage" passHref>
-                  <Image
-                    src={data?.avatar}
-                    alt="avatar"
-                    width={35}
-                    height={35}
-                  />
-                </Link>
-              ) : (
-                <Link href="/mypage" passHref>
-                  <Image
-                    src={DefaultAvatarImage}
-                    alt="avatar"
-                    width={35}
-                    height={35}
-                  />
-                </Link>
-              )}
+              <Link href="/mypage" passHref>
+                <Image src={avatarSrc} alt="avatar" width={35} height={35} />
+              </Link>
             </li>
             <li>
               <button onClick={handleLogout}>로그아웃</button>
