@@ -20,14 +20,14 @@ const Nav = () => {
 
   const [avatar, setAvatar] = useState(null);
 
-  const { data, isSuccess, isLoading } = useQuery({
+  const { data, isSuccess, isLoading, isError, error } = useQuery({
     queryKey: ["userInfo"],
     queryFn: getUserInfo,
   });
 
   console.log(data?.avatar);
 
-  //FIXME - 두번 랜더링 어떻게 해야할지 생각해보자
+  //FIXME - 두번 랜더링 어떻게 해야할지 생각해보자 data === null 수정
   useEffect(() => {
     if (isSuccess && data) {
       setUserInfo(data);
@@ -46,9 +46,11 @@ const Nav = () => {
     router.push("/");
   };
 
+  //FIXME - 최초 로그인 이미지 처리 수정, 토큰 만료시 수정
   if (isLoading) {
     return <div>로딩중 </div>;
   }
+
   const avatarSrc = data?.avatar ?? DefaultAvatarImage;
 
   return (

@@ -77,6 +77,8 @@ const Mypage = () => {
     }
   };
 
+  //FIXME - 로딩 스켈레톤 추가 예정
+
   return (
     <main className={S.main}>
       <h2>{userInfo?.nickname}님의 프로필</h2>
