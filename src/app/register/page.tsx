@@ -1,20 +1,20 @@
 "use client";
-import React, { useId, useState } from "react";
+import { ChangeEvent, useId, useState } from "react";
 import S from "@/styles/style.module.scss";
-import { login, register } from "@/lib/api/auth";
+import { register } from "@/lib/api/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Register = () => {
   const id = useId();
   const router = useRouter();
   const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [password, setPassword] = useState("");
 
   //회원가입
-  const onClickSignUp = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickSignUp = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await register({ id: userId, password, nickname });
 
@@ -23,21 +23,10 @@ const Register = () => {
     router.push("/");
   };
 
-  //로그인
-  const onClickSignIn = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const response = await login({ id: userId, password });
-    console.log(response);
-    toast.success("로그인 완료!");
-    router.push("/");
-  };
-
   return (
     <main className={S.main}>
-      <h2>
-        {isLoginMode ? "회원가입 페이지 입니다." : "로그인 페이지 입니다."}
-      </h2>
-      <form>
+      <h2>회원가입 페이지 입니다.</h2>
+      <form onSubmit={onClickSignUp}>
         <div>
           <label htmlFor={`${id}-userId`}>아이디</label>
           <input
@@ -61,28 +50,21 @@ const Register = () => {
           />
           <p>비밀번호를 입력해주세요.</p>
         </div>
-        {isLoginMode ? (
-          <>
-            <div>
-              <label htmlFor={`${id}-nickname`}>닉네임</label>
-              <input
-                type="text"
-                placeholder="닉네임을 입력해 주세요."
-                id={`${id}-nickname`}
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-              />
-              <p>닉네임을 입력해주세요.</p>
-            </div>
-            <button onClick={onClickSignUp}>회원가입</button>
-          </>
-        ) : (
-          <button onClick={onClickSignIn}>로그인</button>
-        )}
+
+        <div>
+          <label htmlFor={`${id}-nickname`}>닉네임</label>
+          <input
+            type="text"
+            placeholder="닉네임을 입력해 주세요."
+            id={`${id}-nickname`}
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+          <p>닉네임을 입력해주세요.</p>
+        </div>
+        <button type="submit">회원가입</button>
       </form>
-      <button onClick={() => setIsLoginMode(!isLoginMode)}>
-        {isLoginMode ? "로그인하기" : "회원가입하기"}
-      </button>
+      <Link href="/login">로그인하기</Link>
     </main>
   );
 };
