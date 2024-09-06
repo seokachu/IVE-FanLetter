@@ -31,3 +31,24 @@ export interface UserState {
     setUserInfo: (userInfo: UserInfo) => void;
   };
 }
+
+export interface Letters {
+  avatar: string;
+  content: string;
+  id: string;
+  nickname: string;
+  title: string;
+  writeTo: string;
+  createAt: string; //수정
+}
+
+export interface LetterProps {
+  item: Letters;
+}
+
+export interface LettersState {
+  lettersInfo: Letters[];
+  actions: {
+    setLettersInfo: (letters: Letters[]) => void;
+  };
+}
