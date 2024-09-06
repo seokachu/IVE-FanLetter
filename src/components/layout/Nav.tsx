@@ -3,26 +3,21 @@ import S from "@/styles/common.module.scss";
 import Link from "next/link";
 import DefaultAvatarImage from "@/assets/images/profile-user.webp";
 import Image from "next/image";
-import NotFoundPage from "@/app/not-found";
-import Loading from "../common/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "@/lib/api/auth";
-import { useState } from "react";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useIsLoginActions, useIsLoginMode } from "@/shared/store/toggle-store";
 
 const Nav = () => {
-  const [isLoginMode, setIsLoginMode] = useState(false);
-  const router = useRouter();
+  const isLoginMode = useIsLoginMode();
+  const { setIsLoginMode } = useIsLoginActions();
+
   const { data } = useQuery({
     queryKey: ["userInfo"],
     queryFn: getUserInfo,
   });
 
   console.log(data);
-
-  if (data) {
-  }
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");

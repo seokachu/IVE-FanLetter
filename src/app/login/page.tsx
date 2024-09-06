@@ -4,12 +4,14 @@ import { login } from "@/lib/api/auth";
 import S from "@/styles/common.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, ChangeEventHandler, useId, useState } from "react";
+import { ChangeEvent, useId, useState } from "react";
 import { toast } from "react-toastify";
+import { useIsLoginActions } from "@/shared/store/toggle-store";
 
 const Login = () => {
   const id = useId();
   const router = useRouter();
+  const { setIsLoginMode } = useIsLoginActions();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,13 +20,14 @@ const Login = () => {
     e.preventDefault();
     const response = await login({ id: userId, password });
     console.log(response);
+    setIsLoginMode(true);
     toast.success("로그인 완료!");
     router.push("/");
   };
 
   return (
     <main className={S.main}>
-      <h2>회원가입 페이지 입니다.</h2>
+      <h2>로그인 페이지 입니다.</h2>
       <form onSubmit={onClickSignIn}>
         <div>
           <label htmlFor={`${id}-userId`}>아이디</label>

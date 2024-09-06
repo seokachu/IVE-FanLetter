@@ -9,6 +9,7 @@ import Link from "next/link";
 const Register = () => {
   const id = useId();
   const router = useRouter();
+
   const [userId, setUserId] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +21,7 @@ const Register = () => {
 
     console.log(response);
     toast.success("회원가입 완료!");
-    router.push("/");
+    router.push("/login");
   };
 
   return (
