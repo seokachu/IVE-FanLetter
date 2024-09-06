@@ -1,7 +1,7 @@
-import StyleLayout from "@/styles/common.module.scss";
+import S from "@/styles/common.module.scss";
 
 const Mypage = () => {
-  return <main className={StyleLayout.main}>마이페이지입니다.</main>;
+  return <main className={S.main}>마이페이지입니다.</main>;
 };
 
 export default Mypage;

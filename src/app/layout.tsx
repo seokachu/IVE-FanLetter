@@ -21,7 +21,11 @@ export default function RootLayout({
     <html lang="ko">
       <body className={notoSansKr.className}>
         <ToastContainer position="top-left" autoClose={1000} />
-        {children}
+        <QueryProvider>
+          <Header />
+          {children}
+        </QueryProvider>
+        <Footer />
       </body>
     </html>
   );
