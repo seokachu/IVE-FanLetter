@@ -1,8 +1,9 @@
 export interface UserInfo {
-  id: string;
-  password: string;
+  id?: string;
+  password?: string;
   nickname?: string;
-  avatar?: string;
+  avatar?: string | null;
+  imgFile?: File | null;
 }
 
 //임시(삭제예정)
@@ -21,5 +22,12 @@ export interface IsLoginMode {
   isLoginMode: boolean;
   actions: {
     setIsLoginMode: (state: boolean) => void;
+  };
+}
+
+export interface UserState {
+  userInfo: UserInfo | null;
+  actions: {
+    setUserInfo: (userInfo: UserInfo) => void;
   };
 }

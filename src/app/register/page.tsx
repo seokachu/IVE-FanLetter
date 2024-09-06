@@ -9,7 +9,6 @@ import Link from "next/link";
 const Register = () => {
   const id = useId();
   const router = useRouter();
-
   const [userId, setUserId] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -17,9 +16,7 @@ const Register = () => {
   //회원가입
   const onClickSignUp = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await register({ id: userId, password, nickname });
-
-    console.log(response);
+    await register({ id: userId, password, nickname });
     toast.success("회원가입 완료!");
     router.push("/login");
   };

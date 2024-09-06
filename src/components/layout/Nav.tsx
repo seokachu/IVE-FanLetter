@@ -6,42 +6,75 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "@/lib/api/auth";
 import { toast } from "react-toastify";
-import { useIsLoginActions, useIsLoginMode } from "@/shared/store/toggle-store";
+import { useIsLoginActions, useIsLoginMode } from "@/shared/store/toggleStore";
+import { useUserActions, useUserInfo } from "@/shared/store/userStore";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Nav = () => {
+  const router = useRouter();
   const isLoginMode = useIsLoginMode();
+  const userInfo = useUserInfo();
   const { setIsLoginMode } = useIsLoginActions();
+  const { setUserInfo } = useUserActions();
 
-  const { data } = useQuery({
+  const [avatar, setAvatar] = useState(null);
+
+  const { data, isSuccess } = useQuery({
     queryKey: ["userInfo"],
     queryFn: getUserInfo,
   });
 
-  console.log(data);
+  console.log(data?.avatar);
+
+  //FIXME - 두번 랜더링 어떻게 해야할지 생각해보자
+  useEffect(() => {
+    if (isSuccess && data) {
+      setUserInfo(data);
+      setIsLoginMode(true);
+    } else if (data === null) {
+      localStorage.removeItem("accessToken");
+      toast.warning("토큰이 만료되었습니다. 다시 로그인 해주세요!");
+      router.push("/");
+    }
+  }, [data]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     toast.success("로그아웃 되었습니다.");
     setIsLoginMode(false);
+    router.push("/");
   };
 
   return (
     <nav className={S.gnb}>
       <ul>
-        {isLoginMode ? (
+        {isLoginMode && userInfo ? (
           <>
+            <li>{data?.nickname}</li>
             <li>
-              <button onClick={handleLogout}>로그아웃</button>
+              {data.avatar ? (
+                <Link href="/mypage" passHref>
+                  <Image
+                    src={data?.avatar}
+                    alt="avatar"
+                    width={35}
+                    height={35}
+                  />
+                </Link>
+              ) : (
+                <Link href="/mypage" passHref>
+                  <Image
+                    src={DefaultAvatarImage}
+                    alt="avatar"
+                    width={35}
+                    height={35}
+                  />
+                </Link>
+              )}
             </li>
             <li>
-              <Link href="/mypage" passHref>
-                <Image
-                  src={DefaultAvatarImage}
-                  alt="avatar"
-                  width={35}
-                  height={35}
-                />
-              </Link>
+              <button onClick={handleLogout}>로그아웃</button>
             </li>
           </>
         ) : (

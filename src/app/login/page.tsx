@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useId, useState } from "react";
 import { toast } from "react-toastify";
-import { useIsLoginActions } from "@/shared/store/toggle-store";
+import { useIsLoginActions } from "@/shared/store/toggleStore";
 
 const Login = () => {
   const id = useId();
@@ -18,8 +18,7 @@ const Login = () => {
   //로그인
   const onClickSignIn = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await login({ id: userId, password });
-    console.log(response);
+    await login({ id: userId, password });
     setIsLoginMode(true);
     toast.success("로그인 완료!");
     router.push("/");
