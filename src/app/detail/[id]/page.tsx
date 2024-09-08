@@ -87,21 +87,27 @@ const Detail = () => {
 
   //수정완료 버튼
   const handleEditLetterSubmit = () => {
+    let hasError = false;
+
     if (!title?.trim()) {
       setTitleError("제목을 입력해 주세요.");
-   
+      hasError = true;
     }
 
     if (!content?.trim()) {
       setContentError("내용을 입력해 주세요.");
-    
+      hasError = true;
+    }
+
+    if (hasError) {
+      return;
     }
 
     const isTitleUnChanged = title === letterItem?.title;
     const isContentUnChanged = content === letterItem?.content;
 
     if (isTitleUnChanged && isContentUnChanged) {
-      toast.info("변경된 사항이 없습니다.");
+      toast.warning("변경된 사항이 없습니다.");
       return;
     }
 
@@ -109,8 +115,6 @@ const Detail = () => {
       ...letterItem,
       title,
       content,
-      // nickname: letterItem?.nickname,
-      // avatar: letterItem?.avatar,
     });
 
     toast.success("수정 되었습니다.");
@@ -122,6 +126,7 @@ const Detail = () => {
   //취소버튼
   const handleCancel = () => {
     setIsEditing(false);
+    toast.info("취소 되었습니다.");
   };
 
   return (

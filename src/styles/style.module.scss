@@ -334,6 +334,7 @@
 
         p {
           line-height: 32px;
+          overflow-wrap: break-word;
 
           &:first-of-type {
             font-size: 18px;
@@ -344,6 +345,16 @@
           width: 100%;
           padding: 8px 15px;
           font-size: 16px;
+
+          &:focus {
+            outline: 1px solid rgba(244, 101, 165, .7);
+            border: 1px solid $light-gray;
+            padding: 8px 15px;
+          }
+
+          &.error {
+            border: 1px solid $crimson;
+          }
         }
 
         textarea {
@@ -352,6 +363,15 @@
           padding: 8px 15px;
           font-size: 16px;
           margin-top: 10px;
+
+          &:focus {
+            outline: 1px solid rgba(244, 101, 165, .7);
+            border: 1px solid $light-gray;
+          }
+
+          &.error {
+            border: 1px solid $crimson;
+          }
         }
 
         >span {
@@ -385,12 +405,7 @@
 
       }
     }
-
-
-
-
   }
-
 }
 
 
