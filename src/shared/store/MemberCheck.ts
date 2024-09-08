@@ -1,8 +1,9 @@
-import { Members, MembersState } from "@/types";
+import { membersData } from "@/data/members";
+import { MembersState } from "@/types";
 import { create } from "zustand";
 
 const useMembersStore = create<MembersState>((set) => ({
-  selectedMember: "",
+  selectedMember: membersData[0].name,
   actions: {
     setSelectedMember: (selected: string) => set({ selectedMember: selected }),
   },

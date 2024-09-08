@@ -35,13 +35,13 @@ export interface UserState {
 }
 
 export interface Letters {
-  avatar: string;
-  content: string;
   id: string;
-  nickname: string;
   title: string;
+  content: string;
+  nickname: string;
+  avatar: string | null;
   writeTo: string;
-  createdAt: string; //수정
+  createdAt?: string;
 }
 
 export interface LetterProps {
