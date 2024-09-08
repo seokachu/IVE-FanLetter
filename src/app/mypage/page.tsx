@@ -1,10 +1,10 @@
 "use client";
 import { updateProfile } from "@/lib/api/auth";
 import { useUserActions, useUserInfo } from "@/shared/store/userStore";
-import S from "@/styles/common.module.scss";
+import S from "@/styles/style.module.scss";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import { ChangeEvent, useId, useState } from "react";
+import { ChangeEvent, useId, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import DefaultAvatarImage from "@/assets/images/profile-user.webp";
 
@@ -17,6 +17,8 @@ const Mypage = () => {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   //사용자 업데이트 query
   const updateUser = useMutation({
@@ -35,6 +37,11 @@ const Mypage = () => {
       toast.error("업데이트 실패. 다시 시도해 주세요.");
     },
   });
+
+  //이미지 클릭 버튼 핸들러
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
 
   //파일 수정 버튼 - 클릭시 바로 적용할 수 있도록 랜더링
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -77,47 +84,49 @@ const Mypage = () => {
     }
   };
 
-  //FIXME - 로딩 스켈레톤 추가 예정
+  //FIXME - 로딩창 버튼 스켈레톤 추가 예정
 
   return (
     <main className={S.main}>
-      <h2>{userInfo?.nickname}님의 프로필</h2>
-      <form>
-        <div>
-          <Image
-            src={preview || userInfo?.avatar || DefaultAvatarImage}
-            alt="avatar"
-            width={35}
-            height={35}
-          />
-          <input
-            type="file"
-            onChange={(e) => handleFileChange(e)}
-            accept="image/*"
-          />
-        </div>
-        {!isUpdate ? (
-          <>
-            <div>
-              <label htmlFor={`${id}-nickname`}>닉네임</label>
+      <div className={S.myPageWrapper}>
+        <h2>{userInfo?.nickname}님의 프로필</h2>
+        <form>
+          <div className={S.mypageImage}>
+            <Image
+              src={preview || userInfo?.avatar || DefaultAvatarImage}
+              alt="avatar"
+              width={100}
+              height={100}
+              onClick={handleImageClick}
+            />
+            <input
+              ref={fileInputRef}
+              type="file"
+              onChange={(e) => handleFileChange(e)}
+              accept="image/*"
+            />
+          </div>
+          {!isUpdate ? (
+            <div className={S.mypageInfo}>
               <p id={`${id}-nickname`}>{userInfo?.nickname}</p>
+              <button onClick={onClickUpdate}>수정</button>
             </div>
-            <button onClick={onClickUpdate}>닉네임 수정</button>
-          </>
-        ) : (
-          <>
-            <div>
-              <label htmlFor={`${id}-nickname`}>닉네임</label>
-              <input
-                type="text"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-              />
+          ) : (
+            <div className={S.mypageInfo}>
+              <div>
+                <input
+                  type="text"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  autoFocus
+                  maxLength={10}
+                />
+              </div>
+              <button onClick={handleUpdateProfile}>수정완료</button>
             </div>
-            <button onClick={handleUpdateProfile}>수정완료</button>
-          </>
-        )}
-      </form>
+          )}
+        </form>
+      </div>
     </main>
   );
 };

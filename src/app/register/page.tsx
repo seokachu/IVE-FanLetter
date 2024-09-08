@@ -45,6 +45,7 @@ const Register = () => {
             id={`${id}-password`}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            maxLength={10}
           />
           <p>비밀번호를 입력해주세요.</p>
         </div>
@@ -57,6 +58,7 @@ const Register = () => {
             id={`${id}-nickname`}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
+            maxLength={10}
           />
           <p>닉네임을 입력해주세요.</p>
         </div>
