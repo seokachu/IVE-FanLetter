@@ -62,6 +62,15 @@
       "avatar": null,
       "writeTo": "안유진",
       "createdAt": "2024-09-09"
+    },
+    {
+      "id": "f34bfed4-7dae-4190-a528-c59b0d6cf5ab",
+      "title": "asdfasdf",
+      "nickname": "",
+      "content": "asdfasdf",
+      "avatar": null,
+      "writeTo": "안유진",
+      "createdAt": "2024-09-09"
     }
   ]
 }

@@ -1,7 +1,7 @@
 "use client";
 import { membersData } from "@/data/members";
 import MembersAvatar from "./MembersAvatar";
-import { ChangeEvent, EventHandler, useId, useState } from "react";
+import { ChangeEvent, useId, useState } from "react";
 import {
   useSelectedActions,
   useSelectedMember,
