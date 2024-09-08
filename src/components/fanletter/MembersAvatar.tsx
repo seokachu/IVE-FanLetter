@@ -4,6 +4,7 @@ import {
   useSelectedMember,
 } from "@/shared/store/MemberCheck";
 import Image from "next/image";
+import S from "@/styles/style.module.scss";
 
 const MembersAvatar = () => {
   const selectedMember = useSelectedMember();
@@ -14,13 +15,13 @@ const MembersAvatar = () => {
   };
 
   return (
-    <div>
+    <div className={S.membersInner}>
       <ul>
         {membersData.map((item) => (
           <li
             key={item.index}
             onClick={() => handleMembersAvatar(item.name)}
-            className={selectedMember === item.name ? "active" : ""}
+            className={selectedMember === item.name ? `${S.active}` : ""}
           >
             <Image src={item.image} alt={item.name} width={70} height={70} />
             <h3>{item.name}</h3>

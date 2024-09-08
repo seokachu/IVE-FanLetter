@@ -1,6 +1,5 @@
 "use client";
 import { deleteLetter, getLetter, patchLetter } from "@/lib/api/letter";
-import { useLetterInfo } from "@/shared/store/letterListStore";
 import S from "@/styles/common.module.scss";
 import { Letters } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -66,7 +65,7 @@ const Detail = () => {
     setContent(letterItem?.content || "");
   };
 
-  //수정완료
+  //수정완료 버튼
   const handleEditLetterSubmit = () => {
     if (letterItem) {
       editMutate({
