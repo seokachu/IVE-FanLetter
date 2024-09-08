@@ -39,7 +39,7 @@ export interface Letters {
   nickname: string;
   title: string;
   writeTo: string;
-  createAt: string; //수정
+  createdAt: string; //수정
 }
 
 export interface LetterProps {

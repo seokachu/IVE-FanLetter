@@ -23,7 +23,7 @@ const Detail = () => {
             <h3>{letterItem?.nickname}</h3>
           </div>
           <div>
-            <time>{letterItem?.createAt}</time>
+            <time>{letterItem?.createdAt}</time>
           </div>
         </div>
         <div>
