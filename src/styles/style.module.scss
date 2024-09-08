@@ -19,7 +19,6 @@
 
 
 /*------------ LetterForm.tsx, MembersAvatar.tsx ------------*/
-
 .LetterFormWrapper {
   text-align: center;
 
@@ -180,10 +179,76 @@
   }
 }
 
-
 /*------------ LetterList.tsx ------------*/
+.letterListInner {
+  max-width: 700px;
+  margin: 0 auto;
 
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 
+    li {
+      border: 1px solid $primary-color;
+      padding: 35px 40px;
+      border-radius: 8px;
+      cursor: pointer;
+
+      .letterListItem {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .letterItemUserInfo {
+          display: flex;
+          justify-content: space-between;
+
+          >div {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            img {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              object-fit: cover;
+            }
+
+            h3 {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+
+          time {
+            color: $light-black;
+            font-size: 14px;
+          }
+        }
+
+        .letterItemContent {
+          h3 {
+            font-size: 18px;
+          }
+
+          p {
+            margin-top: 10px;
+            line-height: 24px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &:first-of-type {
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 /*------------ LetterItems.tsx ------------*/
 

@@ -22,7 +22,6 @@ const Detail = () => {
   const [content, setContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
-  console.log(query);
   const letterItem = query?.data?.find((item: Letters) => item.id === id);
 
   //삭제 query

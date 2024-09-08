@@ -117,3 +117,15 @@
     }
   }
 }
+
+/*------------ Loading ------------*/
+.loading {
+  margin-top: 150px;
+  position: fixed;
+  inset: 0;
+  background-color: red;
+  font-size: 43px;
+  z-index: 999;
+}
+
+/*------------ NotFound ------------*/
