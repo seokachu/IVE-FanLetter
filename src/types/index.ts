@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 export interface UserInfo {
   id?: string;
   password?: string;
@@ -51,4 +53,18 @@ export interface LettersState {
   actions: {
     setLettersInfo: (letters: Letters[]) => void;
   };
+}
+
+export interface MembersState {
+  selectedMember: string;
+  actions: {
+    setSelectedMember: (state: string) => void;
+  };
+}
+
+//삭제예정
+export interface Members {
+  index: number;
+  name: string;
+  image: StaticImageData;
 }

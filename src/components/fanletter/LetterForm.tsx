@@ -2,25 +2,36 @@
 import { membersData } from "@/data/members";
 import MembersAvatar from "./MembersAvatar";
 import { ChangeEvent, useId } from "react";
+import {
+  useSelectedActions,
+  useSelectedMember,
+} from "@/shared/store/MemberCheck";
 
 const LetterForm = () => {
   const id = useId();
+  const selectedMember = useSelectedMember();
+  const { setSelectedMember } = useSelectedActions();
+
+  const handleMemberSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMember(e.target.value);
+  };
 
   const handleLetterSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
   };
 
   return (
     <div>
       <h2>IVE에게 응원의 메시지를 남겨주세요</h2>
       <MembersAvatar />
-      <select>
-        {membersData.map((item) => (
-          <option value={item.name}>{item.name}</option>
-        ))}
-      </select>
       <form onSubmit={handleLetterSubmit}>
+        <select onChange={handleMemberSelect} value={selectedMember}>
+          {membersData.map((item) => (
+            <option value={item.name} key={item.index}>
+              {item.name}
+            </option>
+          ))}
+        </select>
         <div>
           <label htmlFor={`${id}-title`}>제목</label>
           <input
