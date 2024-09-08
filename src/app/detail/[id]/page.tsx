@@ -1,11 +1,14 @@
 "use client";
 import { deleteLetter, getLetter, patchLetter } from "@/lib/api/letter";
-import S from "@/styles/common.module.scss";
+import S from "@/styles/style.module.scss";
 import { Letters } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
+import DefaultAvatarImage from "@/assets/images/profile-user.webp";
+import Image from "next/image";
+import { notoSansKr } from "@/assets/fonts/font";
 
 const Detail = () => {
   const { id } = useParams();
@@ -21,7 +24,10 @@ const Detail = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [titleError, setTitleError] = useState("");
+  const [contentError, setContentError] = useState("");
 
+  const imageSrc = query?.data?.avatar || DefaultAvatarImage;
   const letterItem = query?.data?.find((item: Letters) => item.id === id);
 
   //삭제 query
@@ -48,6 +54,21 @@ const Detail = () => {
     },
   });
 
+  //validation
+  const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+    if (e.target.value !== "") {
+      setTitleError("");
+    }
+  };
+
+  const handleContent = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+    if (e.target.value !== "") {
+      setContentError("");
+    }
+  };
+
   //삭제버튼
   const handleDeleteLetter = () => {
     if (confirm("정말로 삭제 하시겠습니까?")) {
@@ -66,17 +87,36 @@ const Detail = () => {
 
   //수정완료 버튼
   const handleEditLetterSubmit = () => {
-    if (letterItem) {
-      editMutate({
-        ...letterItem,
-        title,
-        content,
-        nickname: query?.data?.nickname,
-        avatar: query?.data?.avatar,
-      });
-      toast.success("수정 되었습니다.");
+    if (!title?.trim()) {
+      setTitleError("제목을 입력해 주세요.");
+   
     }
+
+    if (!content?.trim()) {
+      setContentError("내용을 입력해 주세요.");
+    
+    }
+
+    const isTitleUnChanged = title === letterItem?.title;
+    const isContentUnChanged = content === letterItem?.content;
+
+    if (isTitleUnChanged && isContentUnChanged) {
+      toast.info("변경된 사항이 없습니다.");
+      return;
+    }
+
+    editMutate({
+      ...letterItem,
+      title,
+      content,
+      // nickname: letterItem?.nickname,
+      // avatar: letterItem?.avatar,
+    });
+
+    toast.success("수정 되었습니다.");
     setIsEditing(false);
+    setTitleError("");
+    setContentError("");
   };
 
   //취소버튼
@@ -86,54 +126,76 @@ const Detail = () => {
 
   return (
     <main className={S.main}>
-      <section>
-        {!isEditing ? (
-          <>
-            <div>
-              <h2>To {letterItem?.writeTo}</h2>
-              <div>
-                <p>{letterItem?.avatar}</p>
-                <h3>{letterItem?.nickname}</h3>
+      <section className={S.popup}>
+        {/* <button>&times;</button> */}
+        <div className={S.detailWrapper}>
+          {!isEditing ? (
+            <div className={S.detailContent}>
+              <div className={S.DeleteAndEditButton}>
+                <button onClick={handleEditLetter}>수정</button>
+                <button onClick={handleDeleteLetter}>삭제</button>
               </div>
-              <div>
+              <div className={S.letterWriteTo}>
+                <h2>To {letterItem?.writeTo}</h2>
                 <time>{letterItem?.createdAt}</time>
               </div>
-            </div>
-            <div>
-              <p>{letterItem?.title}</p>
-              <p>{letterItem?.content}</p>
-            </div>
-            <button onClick={handleEditLetter}>수정</button>
-            <button onClick={handleDeleteLetter}>삭제</button>
-          </>
-        ) : (
-          <>
-            <div>
-              <h2>To {letterItem?.writeTo}</h2>
-              <div>
-                <p>{letterItem?.avatar}</p>
-                <h3>{letterItem?.nickname}</h3>
+              <div className={S.detailList}>
+                <p>{letterItem?.title}</p>
+                <p>{letterItem?.content}</p>
               </div>
-              <div>
-                <time>{letterItem?.createdAt}</time>
+              <div className={S.detailUserInfo}>
+                <p>작성자</p>
+                <div>
+                  <Image src={imageSrc} alt={letterItem?.nickname} />
+                  <h3>{letterItem?.nickname}</h3>
+                </div>
               </div>
             </div>
-            <div>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              <input
-                type="text"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-            </div>
-            <button onClick={handleEditLetterSubmit}>수정완료</button>
-            <button onClick={handleCancel}>취소</button>
-          </>
-        )}
+          ) : (
+            <>
+              <div className={S.detailContent}>
+                <div className={S.DeleteAndEditButton}>
+                  <button onClick={handleEditLetterSubmit}>수정완료</button>
+                  <button onClick={handleCancel}>취소</button>
+                </div>
+                <div className={S.letterWriteTo}>
+                  <h2>To {letterItem?.writeTo}</h2>
+                  <time>{letterItem?.createdAt}</time>
+                </div>
+                <div className={S.detailList}>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={handleTitle}
+                    className={titleError ? `${S.error}` : ""}
+                    autoFocus
+                    maxLength={20}
+                  />
+                  <span>{titleError}</span>
+                  <textarea
+                    value={content}
+                    onChange={handleContent}
+                    maxLength={1000}
+                    className={`${notoSansKr.className} ${
+                      contentError ? S.error : ""
+                    }`}
+                  />
+                  <span>{contentError}</span>
+                </div>
+                <div className={S.detailUserInfo}>
+                  <p>작성자</p>
+                  <div>
+                    <Image src={imageSrc} alt={letterItem?.nickname} />
+                    <h3>{letterItem?.nickname}</h3>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+        {/* <div>
+          댓글내용입니다. 댓글내용입니다. 댓글내용입니다.댓글내용입니다.
+        </div> */}
       </section>
     </main>
   );

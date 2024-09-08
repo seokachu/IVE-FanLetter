@@ -87,7 +87,7 @@ const LetterForm = () => {
   };
 
   return (
-    <div className={S.LetterFormWrapper}>
+    <section className={S.LetterFormWrapper}>
       <h2 className={hiMelody.className}>
         IVE에게 응원의 메시지를 남겨주세요!
       </h2>
@@ -126,8 +126,8 @@ const LetterForm = () => {
               className={`${notoSansKr.className} ${
                 contentError ? S.error : ""
               }`}
-              placeholder="최대 100글자까지 작성할 수 있습니다."
-              maxLength={100}
+              placeholder="최대 1000글자까지 작성할 수 있습니다."
+              maxLength={1000}
               value={content}
               onChange={handleContent}
             />
@@ -136,7 +136,7 @@ const LetterForm = () => {
         </div>
         <button type="submit">등록하기</button>
       </form>
-    </div>
+    </section>
   );
 };
 

@@ -24,8 +24,6 @@ const LetterList = () => {
     <NotFoundPage />;
   }
 
-  console.log(data);
-
   const handleItemClick = (id: string) => {
     router.push(`detail/${id}`);
   };
@@ -35,7 +33,7 @@ const LetterList = () => {
     : [];
 
   return (
-    <div className={S.letterListInner}>
+    <section className={S.letterListInner}>
       <ul>
         {filteredLetters?.length > 0 ? (
           filteredLetters.map((item: Letters) => (
@@ -47,7 +45,7 @@ const LetterList = () => {
           <p>내용이 없습니다. {selectedMember}에게 메시지를 보내주세요!</p>
         )}
       </ul>
-    </div>
+    </section>
   );
 };
 
