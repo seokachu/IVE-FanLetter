@@ -22,7 +22,7 @@ const Login = () => {
   const [userIdError, setUserIdError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  const isFormValid = userId.trim().length > 4 && password.trim().length > 4;
+  const isFormValid = userId.trim().length >= 4 && password.trim().length >= 4;
 
   //validation
   const handleUserId = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,25 +45,38 @@ const Login = () => {
 
     if (!userId.trim()) {
       setUserIdError("아이디를 입력해 주세요.");
-    } else if (userId.length <= 4) {
+    } else if (userId.length < 4) {
       setUserIdError("아이디를 4글자 이상 입력해 주세요.");
     }
 
     if (!password.trim()) {
       setPasswordError("비밀번호를 입력해 주세요.");
-    } else if (password.length <= 4) {
+    } else if (password.length < 4) {
       setPasswordError("비밀번호를 4글자 이상 입력해 주세요.");
     }
 
     if (isFormValid) {
-      const response = await login({ id: userId, password, nickname, avatar });
-      setIsLoginMode(true);
-      setUserInfo(response);
-      setUserIdError("");
-      setPasswordError("");
-      toast.success("로그인 완료!");
-      router.push("/");
-      console.log(response);
+      try {
+        const response = await login({
+          id: userId,
+          password,
+          nickname,
+          avatar,
+        });
+        setIsLoginMode(true);
+        setUserInfo(response);
+        setUserIdError("");
+        setPasswordError("");
+        toast.success("로그인 완료!");
+        router.push("/");
+        console.log(response);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+        } else {
+          toast.error("알 수 없는 오류가 발생했습니다.");
+        }
+      }
     }
   };
 

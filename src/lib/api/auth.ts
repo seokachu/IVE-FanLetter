@@ -5,12 +5,12 @@ import axios from "axios";
 //회원가입
 export const register = async ({ id, password, nickname }: UserInfo) => {
   try {
-    const response = await axiosInstance.post("/register", {
+    const { data } = await axiosInstance.post("/register", {
       id,
       password,
       nickname,
     });
-    return response.data;
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw new Error(error?.response.data.message);
@@ -23,12 +23,12 @@ export const register = async ({ id, password, nickname }: UserInfo) => {
 //로그인
 export const login = async ({ id, password }: UserInfo) => {
   try {
-    const response = await axiosInstance.post("/login?expiresIn=10m", {
+    const { data } = await axiosInstance.post("/login?expiresIn=10m", {
       id,
       password,
     });
-    localStorage.setItem("accessToken", response.data.accessToken);
-    return response.data;
+    localStorage.setItem("accessToken", data.accessToken);
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw new Error(error?.response.data.message);
