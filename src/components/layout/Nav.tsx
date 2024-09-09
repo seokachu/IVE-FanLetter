@@ -1,4 +1,3 @@
-"use client";
 import S from "@/styles/common.module.scss";
 import Link from "next/link";
 import DefaultAvatarImage from "@/assets/images/profile-user.webp";

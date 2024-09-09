@@ -22,6 +22,24 @@
   right: 0;
   top: 0;
   left: 0;
+  z-index: 999;
+
+
+  &.active {
+    background-color: $white;
+    position: static;
+    box-shadow: 3px 0px 1px rgba(0, 0, 0, 0.3);
+
+    .header {
+      h1 {
+        a {
+          img {
+            fill: black;
+          }
+        }
+      }
+    }
+  }
 
   .header {
     display: flex;
@@ -54,8 +72,10 @@
 
             img {
               object-fit: cover;
-              width: inherit;
-              height: inherit;
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+              border: 1px solid $light-black;
             }
           }
         }
