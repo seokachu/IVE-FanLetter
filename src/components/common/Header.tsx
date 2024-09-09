@@ -16,8 +16,7 @@ const Header = () => {
       <header className={S.header}>
         <h1>
           <Link href="/">
-            {/* <Image src={Logo} alt="IVE logo" priority /> */}
-            <Logo color={"red"} width={100} height={30} />
+            <Image src={Logo} alt="IVE logo" priority />
           </Link>
         </h1>
         <Nav />
