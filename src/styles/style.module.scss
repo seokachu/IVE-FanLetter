@@ -473,8 +473,8 @@
   }
 }
 
-/*------------ Login.tsx ------------*/
-.loginWrapper {
+/*------------ Login.tsx, Register.tsx ------------*/
+@at-root .loginWrapper {
   width: 500px;
   border: 1px solid $primary-color;
   border-radius: 8px;
@@ -524,6 +524,11 @@
             border: 1px solid $crimson;
             padding: 8px 16px;
           }
+
+          &.success {
+            border: 1px solid $royalblue;
+            padding: 8px 16px;
+          }
         }
 
         input[type="password"]::placeholder {
@@ -546,6 +551,7 @@
       font-size: 16px;
       background-color: $dark-gray;
       color: $white;
+      transition: 0.3s ease-out;
 
       &.active {
         background-color: $primary-color;
@@ -558,4 +564,19 @@
   }
 }
 
-/*------------ Register.tsx ------------*/
+
+.registerWrapper {
+  form {
+    >div {
+      >div {
+        input {
+          width: 310px;
+        }
+
+        p {
+          padding-left: 105px;
+        }
+      }
+    }
+  }
+}

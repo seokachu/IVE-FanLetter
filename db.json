@@ -17,6 +17,24 @@
       "avatar": null,
       "writeTo": "안유진",
       "createdAt": "2024-09-10"
+    },
+    {
+      "id": "1c5d6332-59f9-44f4-a6af-113c72b8da0e",
+      "title": "1234",
+      "nickname": "",
+      "content": "1234",
+      "avatar": null,
+      "writeTo": "안유진",
+      "createdAt": "2024-09-10"
+    },
+    {
+      "id": "5cd79a4f-e0d2-4ce4-a3e7-e48a1584e95d",
+      "title": "1234",
+      "nickname": "",
+      "content": "1234",
+      "avatar": null,
+      "writeTo": "안유진",
+      "createdAt": "2024-09-10"
     }
   ]
 }
