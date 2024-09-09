@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 const Header = () => {
   const pathname = usePathname();
   const isMainPage = pathname === "/";
-  console.log("🚀 ~ Header ~ isMainPage:", isMainPage);
   const headerStyle = !isMainPage ? S.active : "";
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -34,16 +33,18 @@ const Header = () => {
     };
   }, []);
 
-  // isScrolled 상태가 변경될 때마다 로그 출력
-  useEffect(() => {
-    console.log("isScrolled:", isScrolled);
-  }, [isScrolled]);
+  //조건문 logo image
+  let logoSrc;
 
-  const logoSrc = isMainPage
-    ? isScrolled
-      ? SubLogoImage
-      : MainLogoImage
-    : SubLogoImage;
+  if (isMainPage) {
+    if (isScrolled) {
+      logoSrc = SubLogoImage;
+    } else {
+      logoSrc = MainLogoImage;
+    }
+  } else {
+    logoSrc = SubLogoImage;
+  }
 
   return (
     <div className={`${S.headerWrapper} ${headerStyle}`}>
