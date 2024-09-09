@@ -426,9 +426,9 @@
   }
 
   form {
-    .mypageImage {
-      position: relative;
+    text-align: center;
 
+    .mypageImage {
       img {
         width: 100px;
         height: 100px;
@@ -451,6 +451,29 @@
       font-size: 18px;
       margin-top: 50px;
 
+      &.active {
+        align-items: baseline;
+      }
+
+      >div {
+        input[type="text"] {
+          padding: 8px 10px;
+          font-size: 16px;
+
+          &:focus {
+            outline: none;
+            border: 1px solid $primary-color;
+            padding: 9px 11px;
+          }
+        }
+
+        p {
+          text-align: left;
+          font-size: 14px;
+          margin: 5px 0 0 5px;
+          color: $crimson;
+        }
+      }
 
       button {
         background-color: $primary-color;
@@ -458,16 +481,6 @@
         padding: 10px 15px;
         color: $white;
         border-radius: 8px;
-      }
-
-      input[type="text"] {
-        padding: 8px 10px;
-        font-size: 16px;
-
-        &:focus {
-          outline: none;
-          border: 1px solid $primary-color;
-        }
       }
     }
   }
@@ -480,6 +493,34 @@
   border-radius: 8px;
   padding: 50px 40px;
   text-align: center;
+  position: relative;
+
+  &::before {
+    content: 'ID : test-11\A password : 1234';
+    white-space: pre-line;
+    width: 250px;
+    height: 50px;
+    background-color: $primary-color;
+    color: $white;
+    position: absolute;
+    left: 50%;
+    padding: 25px 0;
+    line-height: 25px;
+    top: calc(100% + 30px);
+    transform: translateX(-50%);
+    border-radius: 8px;
+  }
+
+  &::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background-color: $primary-color;
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 30px);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
 
   h2 {
     font-size: 24px;

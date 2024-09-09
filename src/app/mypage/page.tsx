@@ -17,6 +17,7 @@ const Mypage = () => {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [nicknameError, setNicknameError] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -62,11 +63,24 @@ const Mypage = () => {
     setIsUpdate(true);
   };
 
+  //닉네임 수정 validation
+  const handleEdit = (e: ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value);
+    if (e.target.value !== "") {
+      setNicknameError("");
+    }
+  };
+
   //닉네임 수정완료 버튼
   const handleUpdateProfile = async (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
+
+    if (!nickname.trim()) {
+      setNicknameError("닉네임을 입력해 주세요.");
+      return;
+    }
 
     try {
       if (confirm("정말로 수정하시겠습니까?")) {
@@ -76,6 +90,7 @@ const Mypage = () => {
         } else {
           updateUser.mutate({ imgFile: avatar, nickname });
           toast.success("닉네임이 수정 되었습니다.");
+          setNicknameError("");
           setIsUpdate(false);
         }
       }
@@ -112,15 +127,18 @@ const Mypage = () => {
               <button onClick={onClickUpdate}>수정</button>
             </div>
           ) : (
-            <div className={S.mypageInfo}>
+            <div className={`${S.mypageInfo} ${S.active}`}>
               <div>
-                <input
-                  type="text"
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  autoFocus
-                  maxLength={10}
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={nickname}
+                    onChange={handleEdit}
+                    autoFocus
+                    maxLength={10}
+                  />
+                  <p>{nicknameError}</p>
+                </div>
               </div>
               <button onClick={handleUpdateProfile}>수정완료</button>
             </div>
