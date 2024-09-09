@@ -63,6 +63,13 @@ const Register = () => {
     } else {
       setPasswordError("비밀번호를 4글자 이상 입력해 주세요.");
     }
+
+    //비밀번호 일치 여부 체크
+    if (e.target.value !== passwordCheck) {
+      setPasswordCheckError("비밀번호가 일치하지 않습니다.");
+    } else {
+      setPasswordCheckError("");
+    }
   };
 
   const handlePasswordCheck = (e: ChangeEvent<HTMLInputElement>) => {
@@ -84,19 +91,27 @@ const Register = () => {
   //회원가입 form
   const onClickSignUp = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (isFormValid) {
-      await register({ id: userId, password, nickname });
-      toast.success("회원가입 완료!");
-      setUserId("");
-      setPassword("");
-      setNickname("");
-      setPasswordCheck("");
-      setUserIdError("");
-      setNicknameError("");
-      setPasswordError("");
-      setPasswordCheckError("");
-      router.push("/login");
+    try {
+      if (isFormValid) {
+        const response = await register({ id: userId, password, nickname });
+        console.log(response);
+        toast.success("회원가입 완료!");
+        setUserId("");
+        setPassword("");
+        setNickname("");
+        setPasswordCheck("");
+        setUserIdError("");
+        setNicknameError("");
+        setPasswordError("");
+        setPasswordCheckError("");
+        router.push("/login");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("알 수 없는 오류가 발생헀습니다.");
+      }
     }
   };
 
@@ -116,6 +131,7 @@ const Register = () => {
                 value={userId}
                 onChange={handleUserId}
                 maxLength={10}
+                autoComplete="userId"
                 className={userIdError ? S.error : S.success}
               />
               <p>{userIdError}</p>
@@ -129,19 +145,21 @@ const Register = () => {
                 value={password}
                 onChange={handlePassword}
                 maxLength={10}
+                autoComplete="new-password"
                 className={passwordError ? S.error : S.success}
               />
               <p>{passwordError}</p>
             </div>
             <div>
-              <label htmlFor={`${id}-password`}>비밀번호확인</label>
+              <label htmlFor={`${id}-password-check`}>비밀번호확인</label>
               <input
                 type="password"
                 placeholder="&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;"
-                id={`${id}-password`}
+                id={`${id}-password-check`}
                 value={passwordCheck}
                 onChange={handlePasswordCheck}
                 maxLength={10}
+                autoComplete="new-password"
                 className={passwordCheckError ? S.error : S.success}
               />
               <p>{passwordCheckError}</p>

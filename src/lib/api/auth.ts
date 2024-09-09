@@ -13,7 +13,9 @@ export const register = async ({ id, password, nickname }: UserInfo) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      console.log(error?.response.data.message);
+      throw new Error(error?.response.data.message);
+    } else {
+      throw new Error("회원가입 중 알 수 없는 오류가 발생했습니다.");
     }
   }
 };
@@ -29,7 +31,9 @@ export const login = async ({ id, password }: UserInfo) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      console.log(error?.response.data.message);
+      throw new Error(error?.response.data.message);
+    } else {
+      throw new Error("로그인 중 알 수 없는 오류가 발생했습니다.");
     }
   }
 };

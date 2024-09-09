@@ -45,13 +45,13 @@ const Login = () => {
 
     if (!userId.trim()) {
       setUserIdError("아이디를 입력해 주세요.");
-    } else if (userId.length < 4) {
+    } else if (userId.length <= 4) {
       setUserIdError("아이디를 4글자 이상 입력해 주세요.");
     }
 
     if (!password.trim()) {
       setPasswordError("비밀번호를 입력해 주세요.");
-    } else if (password.length < 4) {
+    } else if (password.length <= 4) {
       setPasswordError("비밀번호를 4글자 이상 입력해 주세요.");
     }
 
