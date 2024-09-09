@@ -474,5 +474,88 @@
 }
 
 /*------------ Login.tsx ------------*/
+.loginWrapper {
+  width: 500px;
+  border: 1px solid $primary-color;
+  border-radius: 8px;
+  padding: 50px 40px;
+  text-align: center;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 40px 0 15px;
+
+    >div {
+      margin: 0 auto 20px;
+
+      >div {
+        margin-bottom: 15px;
+        text-align: right;
+
+
+        label {
+          margin-right: 10px;
+          white-space: nowrap;
+        }
+
+        input {
+          padding: 7px 15px;
+          width: 320px;
+          font-size: 16px;
+
+          &::placeholder {
+            color: $dark-gray;
+          }
+
+          &:focus {
+            outline: 1px solid rgba(244, 101, 165, .7);
+            border: 1px solid $light-gray;
+            padding: 8px 16px;
+          }
+
+          &.error {
+            border: 1px solid $crimson;
+            padding: 8px 16px;
+          }
+        }
+
+        input[type="password"]::placeholder {
+          transform: translateY(-2px);
+        }
+
+        p {
+          text-align: left;
+          padding-left: 75px;
+          margin-top: 5px;
+          font-size: 14px;
+          color: $crimson;
+        }
+      }
+    }
+
+    button {
+      border-radius: 8px;
+      padding: 10px 0;
+      font-size: 16px;
+      background-color: $dark-gray;
+      color: $white;
+
+      &.active {
+        background-color: $primary-color;
+      }
+    }
+  }
+
+  >a {
+    font-size: 14px;
+  }
+}
 
 /*------------ Register.tsx ------------*/

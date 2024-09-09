@@ -48,6 +48,7 @@ const Detail = () => {
         writeTo: letter.writeTo,
         nickname: letter.nickname,
         avatar: letter.avatar,
+        createdAt: letter.createdAt,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["letters"] });
@@ -115,6 +116,9 @@ const Detail = () => {
       ...letterItem,
       title,
       content,
+      createdAt: letterItem.createdAt,
+      avatar: letterItem.avatar,
+      nickname: letterItem.nickname,
     });
 
     toast.success("수정 되었습니다.");
@@ -199,7 +203,7 @@ const Detail = () => {
           )}
         </div>
         {/* <div>
-          댓글내용입니다. 댓글내용입니다. 댓글내용입니다.댓글내용입니다.
+          댓글내용입니다.
         </div> */}
       </section>
     </main>
