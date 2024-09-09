@@ -2,7 +2,8 @@
 import Link from "next/link";
 import Nav from "../layout/Nav";
 import Image from "next/image";
-import Logo from "@/assets/images/logo.svg";
+import MainLogoImage from "@/assets/images/logo.svg";
+import SubLogoImage from "@/assets/images/logo_black.svg";
 import S from "@/styles/common.module.scss";
 import { usePathname } from "next/navigation";
 
@@ -16,7 +17,11 @@ const Header = () => {
       <header className={S.header}>
         <h1>
           <Link href="/">
-            <Image src={Logo} alt="IVE logo" priority />
+            <Image
+              src={!headerStyle ? MainLogoImage : SubLogoImage}
+              alt="logo"
+              priority
+            />
           </Link>
         </h1>
         <Nav />

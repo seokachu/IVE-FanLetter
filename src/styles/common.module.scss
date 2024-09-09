@@ -28,17 +28,7 @@
   &.active {
     background-color: $white;
     position: static;
-    box-shadow: 3px 0px 1px rgba(0, 0, 0, 0.3);
-
-    .header {
-      h1 {
-        a {
-          img {
-            fill: black;
-          }
-        }
-      }
-    }
+    box-shadow: 3px 0px 1px rgba(0, 0, 0, 0.7);
   }
 
   .header {
