@@ -87,7 +87,7 @@ const LetterForm = () => {
   };
 
   return (
-    <section className={S.LetterFormWrapper} id="second-section">
+    <section className={S.LetterFormWrapper}>
       <h2 className={hiMelody.className}>
         IVE에게 응원의 메시지를 남겨주세요!
       </h2>

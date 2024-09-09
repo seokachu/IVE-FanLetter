@@ -8,7 +8,7 @@ const Main = () => {
   return (
     <>
       <MainTitle />
-      <main className={S.mainWrapper}>
+      <main className={S.mainWrapper} id="second-section">
         <LetterForm />
         <LetterList />
         <GoTopButton />

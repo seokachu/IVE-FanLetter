@@ -11,8 +11,39 @@ import { useEffect, useState } from "react";
 const Header = () => {
   const pathname = usePathname();
   const isMainPage = pathname === "/";
+  console.log("🚀 ~ Header ~ isMainPage:", isMainPage);
   const headerStyle = !isMainPage ? S.active : "";
-  const logoSrc = headerStyle ? SubLogoImage : MainLogoImage;
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const secondSection = document.getElementById("second-section");
+      if (secondSection) {
+        const sectionTop = secondSection.getBoundingClientRect().top;
+        if (sectionTop <= 30) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // isScrolled 상태가 변경될 때마다 로그 출력
+  useEffect(() => {
+    console.log("isScrolled:", isScrolled);
+  }, [isScrolled]);
+
+  const logoSrc = isMainPage
+    ? isScrolled
+      ? SubLogoImage
+      : MainLogoImage
+    : SubLogoImage;
 
   return (
     <div className={`${S.headerWrapper} ${headerStyle}`}>
