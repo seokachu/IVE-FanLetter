@@ -27,10 +27,11 @@ export interface IsLoginMode {
   };
 }
 
+//삭제예정
 export interface UserState {
   userInfo: UserInfo | null;
   actions: {
-    setUserInfo: (userInfo: UserInfo) => void;
+    setUserInfo: (userInfo: UserInfo | null) => void;
   };
 }
 

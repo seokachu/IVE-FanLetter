@@ -38,18 +38,20 @@ export const login = async ({ id, password }: UserInfo) => {
   }
 };
 
-//유저정보 확인 (마이페이지)
+//유저정보 확인
 export const getUserInfo = async () => {
   try {
-    const response = await axiosInstance.get("/user", {
+    const { data } = await axiosInstance.get("/user", {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    return response.data;
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      console.log(error?.response.data.message);
+      throw new Error(error?.response.data.message);
+    } else {
+      throw new Error("알 수 없는 오류가 발생했습니다.");
     }
   }
 };

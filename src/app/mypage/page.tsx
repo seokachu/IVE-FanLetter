@@ -1,8 +1,7 @@
 "use client";
-import { updateProfile } from "@/lib/api/auth";
-import { useUserActions, useUserInfo } from "@/shared/store/userStore";
+import { getUserInfo, updateProfile } from "@/lib/api/auth";
 import S from "@/styles/style.module.scss";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { ChangeEvent, useId, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -11,14 +10,17 @@ import DefaultAvatarImage from "@/assets/images/profile-user.webp";
 const Mypage = () => {
   const id = useId();
   const queryClient = useQueryClient();
-  const userInfo = useUserInfo();
-  const { setUserInfo } = useUserActions();
-  const [nickname, setNickname] = useState(userInfo?.nickname || "");
-  const [avatar, setAvatar] = useState<File | null>(null);
+
+  //유저정보 query
+  const { data } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: getUserInfo,
+  });
+
+  const [nickname, setNickname] = useState(data?.nickname);
   const [preview, setPreview] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState(false);
   const [nicknameError, setNicknameError] = useState("");
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   //사용자 업데이트 query
@@ -30,9 +32,8 @@ const Mypage = () => {
       imgFile: File | null;
       nickname: string;
     }) => updateProfile({ imgFile, nickname }),
-    onSuccess: (updateUserInfo) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userInfo"] });
-      setUserInfo(updateUserInfo);
     },
     onError: () => {
       toast.error("업데이트 실패. 다시 시도해 주세요.");
@@ -59,7 +60,7 @@ const Mypage = () => {
   //닉네임 수정 버튼
   const onClickUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setNickname(userInfo?.nickname || "");
+    setNickname(data?.nickname);
     setIsUpdate(true);
   };
 
@@ -84,11 +85,11 @@ const Mypage = () => {
 
     try {
       if (confirm("정말로 수정하시겠습니까?")) {
-        if (nickname === userInfo?.nickname) {
+        if (nickname === data?.nickname) {
           toast.warning("수정된 내용이 없습니다.");
           setIsUpdate(false);
         } else {
-          updateUser.mutate({ imgFile: avatar, nickname });
+          updateUser.mutate({ imgFile: data?.avatar, nickname });
           toast.success("닉네임이 수정 되었습니다.");
           setNicknameError("");
           setIsUpdate(false);
@@ -104,11 +105,11 @@ const Mypage = () => {
   return (
     <main className={S.main}>
       <div className={S.myPageWrapper}>
-        <h2>{userInfo?.nickname}님의 프로필</h2>
+        <h2>{data?.nickname}님의 프로필</h2>
         <form>
           <div className={S.mypageImage}>
             <Image
-              src={preview || userInfo?.avatar || DefaultAvatarImage}
+              src={preview || data?.avatar || DefaultAvatarImage}
               alt="avatar"
               width={100}
               height={100}
@@ -123,7 +124,7 @@ const Mypage = () => {
           </div>
           {!isUpdate ? (
             <div className={S.mypageInfo}>
-              <p id={`${id}-nickname`}>{userInfo?.nickname}</p>
+              <p id={`${id}-nickname`}>{data?.nickname}</p>
               <button onClick={onClickUpdate}>수정</button>
             </div>
           ) : (

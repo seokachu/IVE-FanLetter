@@ -29,6 +29,18 @@
   &.active {
     background-color: $light-gray;
     position: static;
+
+    .header {
+      .gnb {
+        ul {
+          li {
+            img {
+              border: 1px solid $dark-gray;
+            }
+          }
+        }
+      }
+    }
   }
 
   .header {
@@ -60,16 +72,22 @@
         align-items: center;
 
         li {
-          a:last-child {
-            width: 35px;
+          &.nickname {
+            font-weight: 700;
+          }
 
-            img {
-              object-fit: cover;
-              width: 35px;
-              height: 35px;
-              border-radius: 50%;
-              border: 1px solid $light-black;
-            }
+          img {
+            object-fit: cover;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 1px solid $light-gray;
+          }
+
+          button {
+            font-size: 16px;
+            background-color: transparent;
+            transform: translateY(3px);
           }
         }
       }

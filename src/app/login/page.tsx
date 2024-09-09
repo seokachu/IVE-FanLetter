@@ -7,14 +7,12 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useId, useState } from "react";
 import { toast } from "react-toastify";
 import { useIsLoginActions } from "@/shared/store/toggleStore";
-import { useUserActions } from "@/shared/store/userStore";
 import { hiMelody } from "@/assets/fonts/font";
 
 const Login = () => {
   const id = useId();
   const router = useRouter();
   const { setIsLoginMode } = useIsLoginActions();
-  const { setUserInfo } = useUserActions();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
@@ -64,7 +62,6 @@ const Login = () => {
           avatar,
         });
         setIsLoginMode(true);
-        setUserInfo(response);
         setUserIdError("");
         setPasswordError("");
         toast.success("로그인 완료!");
