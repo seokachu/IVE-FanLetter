@@ -18,10 +18,10 @@ const LetterList = () => {
   });
 
   if (isLoading) {
-    <Loading />;
+    return <Loading />;
   }
   if (isError) {
-    <NotFoundPage />;
+    return <NotFoundPage />;
   }
 
   const handleItemClick = (id: string) => {

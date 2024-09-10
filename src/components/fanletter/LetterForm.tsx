@@ -6,13 +6,14 @@ import {
   useSelectedActions,
   useSelectedMember,
 } from "@/shared/store/MemberCheck";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Letters } from "@/types";
 import { createLetter } from "@/lib/api/letter";
 import { getFormattedDate } from "@/utils/date";
 import { toast } from "react-toastify";
 import S from "@/styles/style.module.scss";
 import { hiMelody, notoSansKr } from "@/assets/fonts/font";
+import { getUserInfo } from "@/lib/api/auth";
 
 const LetterForm = () => {
   const id = useId();
@@ -20,11 +21,15 @@ const LetterForm = () => {
   const selectedMember = useSelectedMember();
   const { setSelectedMember } = useSelectedActions();
   const [title, setTitle] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [avatar, setAvatar] = useState<string | null>(null);
   const [content, setContent] = useState("");
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
+
+  //유저 정보 데이터 가져오기 query
+  const { data } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: getUserInfo,
+  });
 
   //등록하기 query
   const createMembersLetter = useMutation({
@@ -59,6 +64,11 @@ const LetterForm = () => {
     e.preventDefault();
     const date = getFormattedDate(new Date());
 
+    if (!data) {
+      toast.error("로그인 후 입력해 주세요.");
+      return;
+    }
+
     if (!title?.trim()) {
       setTitleError("제목을 입력해 주세요.");
     }
@@ -71,9 +81,9 @@ const LetterForm = () => {
       const newLetter = {
         id: crypto.randomUUID(),
         title,
-        nickname,
+        nickname: data?.nickname,
         content,
-        avatar,
+        avatar: data?.avatar,
         writeTo: selectedMember,
         createdAt: date,
       };

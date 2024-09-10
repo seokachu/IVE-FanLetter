@@ -35,6 +35,33 @@
       "avatar": null,
       "writeTo": "안유진",
       "createdAt": "2024-09-10"
+    },
+    {
+      "id": "e1888d3f-f949-4ca3-a9ab-66a30b59ddba",
+      "title": "1234",
+      "nickname": "아오114321",
+      "content": "1234",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-09-09/2a1727de-05c1-4655-9d9b-121ba2c90888.jpg",
+      "writeTo": "안유진",
+      "createdAt": "2024-09-10"
+    },
+    {
+      "id": "b208fe88-3710-493a-bc1d-c1e22c59fbac",
+      "title": "1234",
+      "nickname": "아오114321",
+      "content": "1234",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-09-09/2a1727de-05c1-4655-9d9b-121ba2c90888.jpg",
+      "writeTo": "안유진",
+      "createdAt": "2024-09-10"
+    },
+    {
+      "id": "e9d738fe-fb10-482b-a898-70a20132677f",
+      "title": "1234",
+      "nickname": "아오114321",
+      "content": "1234",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-09-09/2a1727de-05c1-4655-9d9b-121ba2c90888.jpg",
+      "writeTo": "안유진",
+      "createdAt": "2024-09-10"
     }
   ]
 }

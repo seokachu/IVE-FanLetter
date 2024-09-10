@@ -15,8 +15,6 @@ const Login = () => {
   const { setIsLoginMode } = useIsLoginActions();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [avatar, setAvatar] = useState("");
   const [userIdError, setUserIdError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
@@ -58,8 +56,6 @@ const Login = () => {
         const response = await login({
           id: userId,
           password,
-          nickname,
-          avatar,
         });
         setIsLoginMode(true);
         setUserIdError("");

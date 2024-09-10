@@ -40,7 +40,7 @@ const Nav = () => {
         toast.error("데이터를 불러오는 데 실패했습니다.");
       }
     }
-  }, [data, isSuccess, isError, error]);
+  }, [data, isSuccess, isError, error, router, setIsLoginMode]);
 
   //로그아웃 핸들러
   const handleLogout = () => {
@@ -60,7 +60,7 @@ const Nav = () => {
     } else {
       setIsLoginMode(false);
     }
-  }, [isLoginMode]);
+  }, [isLoginMode, setIsLoginMode]);
 
   if (isLoading) {
     return <NavSkeleton />;
