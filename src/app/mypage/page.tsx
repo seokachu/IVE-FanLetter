@@ -6,13 +6,14 @@ import Image from "next/image";
 import { ChangeEvent, useId, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import DefaultAvatarImage from "@/assets/images/profile-user.webp";
+import MypageSkeleton from "@/components/skeleton/MypageSkeleton";
 
 const Mypage = () => {
   const id = useId();
   const queryClient = useQueryClient();
 
   //유저정보 query
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["userInfo"],
     queryFn: getUserInfo,
   });
@@ -100,7 +101,9 @@ const Mypage = () => {
     }
   };
 
-  //FIXME - 로딩창 버튼 스켈레톤 추가 예정
+  if (isLoading) {
+    return <MypageSkeleton />;
+  }
 
   return (
     <main className={S.main}>
@@ -114,6 +117,7 @@ const Mypage = () => {
               width={100}
               height={100}
               onClick={handleImageClick}
+              unoptimized
             />
             <input
               ref={fileInputRef}

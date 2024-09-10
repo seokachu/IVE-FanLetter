@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useIsLoginActions, useIsLoginMode } from "@/shared/store/toggleStore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import NavSkeleton from "../skeleton/NavSkeleton";
 
 const Nav = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const Nav = () => {
   const { setIsLoginMode } = useIsLoginActions();
   const [fetchUserInfo, setFetchUserInfo] = useState(false);
 
-  const { data, isSuccess } = useQuery({
+  const { data, isLoading, isSuccess, isError, error } = useQuery({
     queryKey: ["userInfo"],
     queryFn: getUserInfo,
     enabled: fetchUserInfo,
@@ -28,20 +29,25 @@ const Nav = () => {
   useEffect(() => {
     if (isSuccess && data) {
       setIsLoginMode(true);
-      return;
+    } else if (isError) {
+      const errorMessage = error.message;
+      if (errorMessage.includes("401")) {
+        localStorage.removeItem("accessToken");
+        toast.warning("토큰이 만료되었습니다. 다시 로그인 해주세요!");
+        router.push("/");
+        setIsLoginMode(false);
+      } else {
+        toast.error("데이터를 불러오는 데 실패했습니다.");
+      }
     }
-
-    if (data === null) {
-      toast.warning("토큰이 만료되었습니다. 다시 로그인 해주세요!");
-      router.push("/");
-    }
-  }, [data, isSuccess]);
+  }, [data, isSuccess, isError, error]);
 
   //로그아웃 핸들러
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     toast.success("로그아웃 되었습니다.");
     setIsLoginMode(false);
+    setFetchUserInfo(false);
     queryClient.removeQueries({ queryKey: ["userInfo"] });
     router.push("/");
   };
@@ -56,6 +62,10 @@ const Nav = () => {
     }
   }, [isLoginMode]);
 
+  if (isLoading) {
+    return <NavSkeleton />;
+  }
+
   const avatarSrc = data?.avatar ?? DefaultAvatarImage;
 
   return (
@@ -66,7 +76,13 @@ const Nav = () => {
             <li className={S.nickname}>{data?.nickname}</li>
             <li>
               <Link href="/mypage" passHref>
-                <Image src={avatarSrc} alt="avatar" width={35} height={35} />
+                <Image
+                  src={avatarSrc}
+                  alt="avatar"
+                  width={35}
+                  height={35}
+                  unoptimized
+                />
               </Link>
             </li>
             <li>

@@ -63,15 +63,17 @@ export const updateProfile = async ({ imgFile, nickname }: UserInfo) => {
     if (imgFile) formData.append("avatar", imgFile);
     if (nickname) formData.append("nickname", nickname);
 
-    const response = await axiosInstance.patch("/profile", formData, {
+    const { data } = await axiosInstance.patch("/profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    return response.data;
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      console.log(error?.response.data.message);
+      throw new Error(error?.response.data.message);
+    } else {
+      throw new Error("알 수 없는 오류가 발생했습니다.");
     }
   }
 };
