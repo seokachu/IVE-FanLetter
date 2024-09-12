@@ -12,6 +12,8 @@ import { useSelectedMember } from "@/shared/store/MemberCheck";
 const LetterList = () => {
   const router = useRouter();
   const selectedMember = useSelectedMember();
+
+  //letter query
   const { data, isLoading, isError } = useQuery({
     queryKey: ["letters"],
     queryFn: getLetter,

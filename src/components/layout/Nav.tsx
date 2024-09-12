@@ -30,15 +30,15 @@ const Nav = () => {
     if (isSuccess && data) {
       setIsLoginMode(true);
     } else if (isError) {
-      const errorMessage = error.message;
-      if (errorMessage.includes("401")) {
-        localStorage.removeItem("accessToken");
-        toast.warning("토큰이 만료되었습니다. 다시 로그인 해주세요!");
-        router.push("/");
-        setIsLoginMode(false);
-      } else {
-        toast.error("데이터를 불러오는 데 실패했습니다.");
-      }
+      // const errorMessage = error.message;
+      // if (errorMessage.includes("401")) {
+      //   localStorage.removeItem("accessToken");
+      //   toast.warning("토큰이 만료되었습니다. 다시 로그인 해주세요!");
+      //   router.push("/");
+      //   setIsLoginMode(false);
+      // } else {
+      //   toast.error("데이터를 불러오는 데 실패했습니다.");
+      // }
     }
   }, [data, isSuccess, isError, error, router, setIsLoginMode]);
 
@@ -62,9 +62,9 @@ const Nav = () => {
     }
   }, [isLoginMode, setIsLoginMode]);
 
-  if (isLoading) {
-    return <NavSkeleton />;
-  }
+  // if (isLoading) {
+  //   return <NavSkeleton />;
+  // }
 
   const avatarSrc = data?.avatar ?? DefaultAvatarImage;
 

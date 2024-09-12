@@ -6,29 +6,40 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
-import DefaultAvatarImage from "@/assets/images/profile-user.webp";
 import Image from "next/image";
 import { notoSansKr } from "@/assets/fonts/font";
+import { getUserInfo } from "@/lib/api/auth";
+import DefaultAvatarImage from "@/assets/images/profile-user.webp";
 
 const Detail = () => {
   const { id } = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  //데이터 불러오기
-  const query = useQuery({
-    queryKey: ["letters"],
-    queryFn: getLetter,
-  });
-
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
 
-  const imageSrc = query?.data?.avatar || DefaultAvatarImage;
-  const letterItem = query?.data?.find((item: Letters) => item.id === id);
+  //유저 정보 데이터 불러오기
+  const { data } = useQuery({
+    queryKey: ["userInfo"],
+    queryFn: getUserInfo,
+    enabled: isEditing,
+  });
+
+  console.log(data);
+
+  //letter 데이터 불러오기
+  const letterQuery = useQuery({
+    queryKey: ["letters"],
+    queryFn: getLetter,
+  });
+
+  const letterItem = letterQuery?.data?.find((item: Letters) => item.id === id);
+  const imageSrc = data?.avatar || letterItem?.avatar || DefaultAvatarImage;
+  const displayName = data?.nickname || letterItem?.nickname;
+  const isAuthor = data?.id === letterItem?.userId;
 
   //삭제 query
   const { mutate: deleteMutate } = useMutation({
@@ -49,6 +60,7 @@ const Detail = () => {
         nickname: letter.nickname,
         avatar: letter.avatar,
         createdAt: letter.createdAt,
+        userId: letter.userId,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["letters"] });
@@ -72,18 +84,28 @@ const Detail = () => {
 
   //삭제버튼
   const handleDeleteLetter = () => {
-    if (confirm("정말로 삭제 하시겠습니까?")) {
-      deleteMutate(id as string);
-      toast.success("삭제 되었습니다.");
-      router.push("/");
+    if (isAuthor) {
+      if (confirm("정말로 삭제 하시겠습니까?")) {
+        deleteMutate(id as string);
+        toast.success("삭제 되었습니다.");
+        router.push("/");
+      }
+    } else {
+      toast.error("자신이 쓴 내용만 삭제할 수 있습니다.");
+      setIsEditing(false);
     }
   };
 
   //수정버튼
   const handleEditLetter = () => {
-    setIsEditing(true);
-    setTitle(letterItem?.title || "");
-    setContent(letterItem?.content || "");
+    if (isAuthor) {
+      setIsEditing(true);
+      setTitle(letterItem?.title || "");
+      setContent(letterItem?.content || "");
+    } else {
+      toast.error("자신이 쓴 내용만 수정 할 수 있습니다.");
+      setIsEditing(false);
+    }
   };
 
   //수정완료 버튼
@@ -117,8 +139,8 @@ const Detail = () => {
       title,
       content,
       createdAt: letterItem.createdAt,
-      avatar: letterItem.avatar,
-      nickname: letterItem.nickname,
+      avatar: data?.avatar,
+      nickname: data?.nickname,
     });
 
     toast.success("수정 되었습니다.");
@@ -138,31 +160,24 @@ const Detail = () => {
       <section className={S.popup}>
         {/* <button>&times;</button> */}
         <div className={S.detailWrapper}>
-          {!isEditing ? (
-            <div className={S.detailContent}>
-              <div className={S.DeleteAndEditButton}>
-                <button onClick={handleEditLetter}>수정</button>
-                <button onClick={handleDeleteLetter}>삭제</button>
-              </div>
-              <div className={S.letterWriteTo}>
-                <h2>To {letterItem?.writeTo}</h2>
-                <time>{letterItem?.createdAt}</time>
-              </div>
-              <div className={S.detailList}>
-                <p>{letterItem?.title}</p>
-                <p>{letterItem?.content}</p>
-              </div>
-              <div className={S.detailUserInfo}>
-                <p>작성자</p>
-                <div>
-                  <Image src={imageSrc} alt={letterItem?.nickname} />
-                  <h3>{letterItem?.nickname}</h3>
+          <div className={S.detailContent}>
+            {!isEditing ? (
+              <>
+                <div className={S.DeleteAndEditButton}>
+                  <button onClick={handleEditLetter}>수정</button>
+                  <button onClick={handleDeleteLetter}>삭제</button>
                 </div>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className={S.detailContent}>
+                <div className={S.letterWriteTo}>
+                  <h2>To {letterItem?.writeTo}</h2>
+                  <time>{letterItem?.createdAt}</time>
+                </div>
+                <div className={S.detailList}>
+                  <p>{letterItem?.title}</p>
+                  <p>{letterItem?.content}</p>
+                </div>
+              </>
+            ) : (
+              <>
                 <div className={S.DeleteAndEditButton}>
                   <button onClick={handleEditLetterSubmit}>수정완료</button>
                   <button onClick={handleCancel}>취소</button>
@@ -191,16 +206,21 @@ const Detail = () => {
                   />
                   <span>{contentError}</span>
                 </div>
-                <div className={S.detailUserInfo}>
-                  <p>작성자</p>
-                  <div>
-                    <Image src={imageSrc} alt={letterItem?.nickname} />
-                    <h3>{letterItem?.nickname}</h3>
-                  </div>
-                </div>
+              </>
+            )}
+            <div className={S.detailUserInfo}>
+              <p>작성자</p>
+              <div>
+                <Image
+                  src={imageSrc}
+                  alt={displayName}
+                  width={40}
+                  height={40}
+                />
+                <h3>{displayName}</h3>
               </div>
-            </>
-          )}
+            </div>
+          </div>
         </div>
         {/* <div>
           댓글내용입니다.

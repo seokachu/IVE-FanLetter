@@ -27,7 +27,6 @@ export interface IsLoginMode {
   };
 }
 
-//삭제예정
 export interface UserState {
   userInfo: UserInfo | null;
   actions: {
@@ -43,6 +42,7 @@ export interface Letters {
   avatar: string | null;
   writeTo: string;
   createdAt?: string;
+  userId: string;
 }
 
 export interface LetterProps {

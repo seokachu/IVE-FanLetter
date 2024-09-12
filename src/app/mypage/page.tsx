@@ -7,10 +7,12 @@ import { ChangeEvent, useId, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import DefaultAvatarImage from "@/assets/images/profile-user.webp";
 import MypageSkeleton from "@/components/skeleton/MypageSkeleton";
+import { useUserActions } from "@/shared/store/userStore";
 
 const Mypage = () => {
   const id = useId();
   const queryClient = useQueryClient();
+  const { setUserInfo } = useUserActions();
 
   //유저정보 query
   const { data, isLoading } = useQuery({
@@ -54,6 +56,7 @@ const Mypage = () => {
       setPreview(previewUrl);
       // 파일이 선택되면 서버에 업데이트 요청
       updateUser.mutate({ imgFile: file, nickname });
+      setUserInfo({ imgFile: file, nickname });
       toast.success("이미지 변경 완료!");
     }
   };
@@ -93,6 +96,7 @@ const Mypage = () => {
           updateUser.mutate({ imgFile: data?.avatar, nickname });
           toast.success("닉네임이 수정 되었습니다.");
           setNicknameError("");
+          setUserInfo({ imgFile: data?.avatar, nickname });
           setIsUpdate(false);
         }
       }

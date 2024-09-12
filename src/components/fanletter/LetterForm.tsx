@@ -86,6 +86,7 @@ const LetterForm = () => {
         avatar: data?.avatar,
         writeTo: selectedMember,
         createdAt: date,
+        userId: data?.id,
       };
       createMembersLetter.mutate(newLetter);
       toast.success("내용이 등록 되었습니다.");
