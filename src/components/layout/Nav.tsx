@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useIsLoginActions, useIsLoginMode } from "@/shared/store/toggleStore";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import NavSkeleton from "../skeleton/NavSkeleton";
 import useDataQueries from "@/hooks/queries/useQueryData";
@@ -15,16 +14,10 @@ const Nav = () => {
   const queryClient = useQueryClient();
   const isLoginMode = useIsLoginMode();
   const { setIsLoginMode } = useIsLoginActions();
-  const { userInfoQuery, userInfoLoading, isError } = useDataQueries();
+  const { userInfoQuery, userInfoLoading } = useDataQueries();
 
   console.log(userInfoQuery);
   console.log(isLoginMode);
-
-  // 로그인 상태 확인 및 초기 데이터 패칭 설정
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setIsLoginMode(!!token);
-  }, [setIsLoginMode]);
 
   //로그아웃 핸들러
   const handleLogout = () => {
@@ -34,16 +27,6 @@ const Nav = () => {
     queryClient.removeQueries({ queryKey: ["userInfo"] });
     router.push("/");
   };
-
-  //토큰 만료 설정
-  useEffect(() => {
-    if (userInfoQuery && isError) {
-      toast.error("토큰이 만료되었습니다. 다시 로그인 해주세요!");
-      queryClient.removeQueries({ queryKey: ["userInfo"] });
-      setIsLoginMode(false);
-      router.push("/");
-    }
-  }, [userInfoQuery, isError]);
 
   if (userInfoLoading) {
     return <NavSkeleton />;

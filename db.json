@@ -49,6 +49,16 @@
       "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-09-12/65938edd-50d5-4652-bdb7-ce871d568c1c.jpg",
       "userId": "43214321",
       "createdAt": "2024-09-13"
+    },
+    {
+      "id": "9fc5683e-8770-43af-83d1-faa1168be9ab",
+      "title": "43214321",
+      "content": "43214321",
+      "writeTo": "안유진",
+      "nickname": "abc",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-09-12/65938edd-50d5-4652-bdb7-ce871d568c1c.jpg",
+      "userId": "43214321",
+      "createdAt": "2024-09-13"
     }
   ]
 }
