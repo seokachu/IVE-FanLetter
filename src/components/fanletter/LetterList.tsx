@@ -62,7 +62,7 @@ const LetterList = () => {
 
   const displayData = updateLetters || lettersQuery;
   const filteredLetters = selectedMember
-    ? displayData.filter((item: Letters) => item.writeTo === selectedMember)
+    ? displayData?.filter((item: Letters) => item.writeTo === selectedMember)
     : [];
 
   return (

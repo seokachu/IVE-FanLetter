@@ -28,7 +28,7 @@ const useDataQueries = () => {
   const { data: lettersQuery, isLoading: lettersIsLoading } = useQuery({
     queryKey: ["letters", isLoginMode],
     queryFn: getLetter,
-    enabled: isLoginMode || !isLoginMode,
+    retry: false,
   });
 
   //토큰 만료 설정
