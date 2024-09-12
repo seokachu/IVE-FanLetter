@@ -117,7 +117,7 @@ const Detail = () => {
 
   return (
     <main className={S.main}>
-      <section className={S.popup}>
+      <section className={S.modal}>
         {/* <button>&times;</button> */}
         <div className={S.detailWrapper}>
           <div className={S.detailContent}>
