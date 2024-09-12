@@ -13,23 +13,18 @@ import { getFormattedDate } from "@/utils/date";
 import { toast } from "react-toastify";
 import S from "@/styles/style.module.scss";
 import { hiMelody, notoSansKr } from "@/assets/fonts/font";
-import { getUserInfo } from "@/lib/api/auth";
+import useDataQueries from "@/hooks/queries/useQueryData";
 
 const LetterForm = () => {
   const id = useId();
   const queryClient = useQueryClient();
   const selectedMember = useSelectedMember();
   const { setSelectedMember } = useSelectedActions();
+  const { userInfoQuery } = useDataQueries();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
-
-  //유저 정보 데이터 가져오기 query
-  const { data } = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: getUserInfo,
-  });
 
   //등록하기 query
   const createMembersLetter = useMutation({
@@ -64,7 +59,7 @@ const LetterForm = () => {
     e.preventDefault();
     const date = getFormattedDate(new Date());
 
-    if (!data) {
+    if (!userInfoQuery) {
       toast.error("로그인 후 입력해 주세요.");
       return;
     }
@@ -81,12 +76,12 @@ const LetterForm = () => {
       const newLetter = {
         id: crypto.randomUUID(),
         title,
-        nickname: data?.nickname,
+        nickname: userInfoQuery?.nickname,
         content,
-        avatar: data?.avatar,
+        avatar: userInfoQuery?.avatar,
         writeTo: selectedMember,
         createdAt: date,
-        userId: data?.id,
+        userId: userInfoQuery?.id,
       };
       createMembersLetter.mutate(newLetter);
       toast.success("내용이 등록 되었습니다.");

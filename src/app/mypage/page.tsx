@@ -8,19 +8,15 @@ import { toast } from "react-toastify";
 import DefaultAvatarImage from "@/assets/images/profile-user.webp";
 import MypageSkeleton from "@/components/skeleton/MypageSkeleton";
 import { useUserActions } from "@/shared/store/userStore";
+import useDataQueries from "@/hooks/queries/useQueryData";
 
 const Mypage = () => {
   const id = useId();
   const queryClient = useQueryClient();
   const { setUserInfo } = useUserActions();
+  const { userInfoQuery, userInfoLoading } = useDataQueries();
 
-  //유저정보 query
-  const { data, isLoading } = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: getUserInfo,
-  });
-
-  const [nickname, setNickname] = useState(data?.nickname);
+  const [nickname, setNickname] = useState(userInfoQuery?.nickname);
   const [preview, setPreview] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState(false);
   const [nicknameError, setNicknameError] = useState("");
@@ -64,7 +60,7 @@ const Mypage = () => {
   //닉네임 수정 버튼
   const onClickUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setNickname(data?.nickname);
+    setNickname(userInfoQuery?.nickname);
     setIsUpdate(true);
   };
 
@@ -89,14 +85,14 @@ const Mypage = () => {
 
     try {
       if (confirm("정말로 수정하시겠습니까?")) {
-        if (nickname === data?.nickname) {
+        if (nickname === userInfoQuery?.nickname) {
           toast.warning("수정된 내용이 없습니다.");
           setIsUpdate(false);
         } else {
-          updateUser.mutate({ imgFile: data?.avatar, nickname });
+          updateUser.mutate({ imgFile: userInfoQuery?.avatar, nickname });
           toast.success("닉네임이 수정 되었습니다.");
           setNicknameError("");
-          setUserInfo({ imgFile: data?.avatar, nickname });
+          setUserInfo({ imgFile: userInfoQuery?.avatar, nickname });
           setIsUpdate(false);
         }
       }
@@ -105,18 +101,18 @@ const Mypage = () => {
     }
   };
 
-  if (isLoading) {
+  if (userInfoLoading) {
     return <MypageSkeleton />;
   }
 
   return (
     <main className={S.main}>
       <div className={S.myPageWrapper}>
-        <h2>{data?.nickname}님의 프로필</h2>
+        <h2>{userInfoQuery?.nickname}님의 프로필</h2>
         <form>
           <div className={S.mypageImage}>
             <Image
-              src={preview || data?.avatar || DefaultAvatarImage}
+              src={preview || userInfoQuery?.avatar || DefaultAvatarImage}
               alt="avatar"
               width={100}
               height={100}
@@ -132,7 +128,7 @@ const Mypage = () => {
           </div>
           {!isUpdate ? (
             <div className={S.mypageInfo}>
-              <p id={`${id}-nickname`}>{data?.nickname}</p>
+              <p id={`${id}-nickname`}>{userInfoQuery?.nickname}</p>
               <button onClick={onClickUpdate}>수정</button>
             </div>
           ) : (

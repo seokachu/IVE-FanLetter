@@ -1,37 +1,68 @@
 "use client";
-import { getLetter } from "@/lib/api/letter";
-import { useQuery } from "@tanstack/react-query";
+
 import LetterItems from "./LetterItems";
 import { Letters } from "@/types";
 import { useRouter } from "next/navigation";
 import Loading from "../common/Loading";
-import NotFoundPage from "@/app/not-found";
 import S from "@/styles/style.module.scss";
 import { useSelectedMember } from "@/shared/store/MemberCheck";
+import useDataQueries from "@/hooks/queries/useQueryData";
+import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { patchLetter } from "@/lib/api/letter";
 
 const LetterList = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const selectedMember = useSelectedMember();
+  const { userInfoQuery, lettersQuery, lettersIsLoading } = useDataQueries();
+  const [updateLetters, setUpdateLetters] = useState(null);
 
-  //letter query
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["letters"],
-    queryFn: getLetter,
+  const { mutate: editMutate } = useMutation({
+    mutationFn: async (letter: Letters) =>
+      await patchLetter(letter.id, {
+        id: letter.id,
+        title: letter.title,
+        content: letter.content,
+        writeTo: letter.writeTo,
+        nickname: letter.nickname,
+        avatar: letter.avatar,
+        userId: letter.userId,
+        createdAt: letter.createdAt,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["letters"] });
+    },
   });
 
-  if (isLoading) {
+  useEffect(() => {
+    if (userInfoQuery && lettersQuery) {
+      const userId = userInfoQuery?.id;
+
+      const updated = lettersQuery.map((letter: Letters) => {
+        if (letter.userId === userId)
+          editMutate({
+            ...letter,
+            nickname: userInfoQuery.nickname,
+            avatar: userInfoQuery.avatar,
+          });
+        return letter;
+      });
+      setUpdateLetters(updated);
+    }
+  }, [userInfoQuery, lettersQuery, editMutate]);
+
+  if (lettersIsLoading) {
     return <Loading />;
-  }
-  if (isError) {
-    return <NotFoundPage />;
   }
 
   const handleItemClick = (id: string) => {
     router.push(`detail/${id}`);
   };
 
+  const displayData = updateLetters || lettersQuery;
   const filteredLetters = selectedMember
-    ? data?.filter((item: Letters) => item.writeTo === selectedMember)
+    ? displayData.filter((item: Letters) => item.writeTo === selectedMember)
     : [];
 
   return (

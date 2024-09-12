@@ -1,71 +1,31 @@
 "use client";
-import { deleteLetter, getLetter, patchLetter } from "@/lib/api/letter";
 import S from "@/styles/style.module.scss";
 import { Letters } from "@/types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { notoSansKr } from "@/assets/fonts/font";
-import { getUserInfo } from "@/lib/api/auth";
 import DefaultAvatarImage from "@/assets/images/profile-user.webp";
+import useDataQueries from "@/hooks/queries/useQueryData";
+import useMutationData from "@/hooks/mutations/useMutationData";
 
 const Detail = () => {
   const { id } = useParams();
   const router = useRouter();
-  const queryClient = useQueryClient();
+  const { userInfoQuery, lettersQuery } = useDataQueries();
+  const { deleteMutate, editMutate } = useMutationData();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
 
-  //유저 정보 데이터 불러오기
-  const { data } = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: getUserInfo,
-    enabled: isEditing,
-  });
-
-  console.log(data);
-
-  //letter 데이터 불러오기
-  const letterQuery = useQuery({
-    queryKey: ["letters"],
-    queryFn: getLetter,
-  });
-
-  const letterItem = letterQuery?.data?.find((item: Letters) => item.id === id);
-  const imageSrc = data?.avatar || letterItem?.avatar || DefaultAvatarImage;
-  const displayName = data?.nickname || letterItem?.nickname;
-  const isAuthor = data?.id === letterItem?.userId;
-
-  //삭제 query
-  const { mutate: deleteMutate } = useMutation({
-    mutationFn: (id: string) => deleteLetter(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["letters"] });
-    },
-  });
-
-  //수정 query
-  const { mutate: editMutate } = useMutation({
-    mutationFn: async (letter: Letters) =>
-      await patchLetter(letter.id, {
-        id: letter.id,
-        title: letter.title,
-        content: letter.content,
-        writeTo: letter.writeTo,
-        nickname: letter.nickname,
-        avatar: letter.avatar,
-        createdAt: letter.createdAt,
-        userId: letter.userId,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["letters"] });
-    },
-  });
+  const letterItem = lettersQuery?.find((item: Letters) => item.id === id);
+  const imageSrc =
+    userInfoQuery?.avatar || letterItem?.avatar || DefaultAvatarImage;
+  const displayName = userInfoQuery?.nickname || letterItem?.nickname;
+  const isAuthor = userInfoQuery?.id === letterItem?.userId;
 
   //validation
   const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -139,8 +99,8 @@ const Detail = () => {
       title,
       content,
       createdAt: letterItem.createdAt,
-      avatar: data?.avatar,
-      nickname: data?.nickname,
+      avatar: userInfoQuery?.avatar,
+      nickname: userInfoQuery?.nickname,
     });
 
     toast.success("수정 되었습니다.");
