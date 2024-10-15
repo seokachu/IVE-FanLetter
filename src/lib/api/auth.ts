@@ -23,7 +23,7 @@ export const register = async ({ id, password, nickname }: UserInfo) => {
 //로그인
 export const login = async ({ id, password }: UserInfo) => {
   try {
-    const { data } = await axiosInstance.post("/login?expiresIn=5s", {
+    const { data } = await axiosInstance.post("/login?expiresIn=10m", {
       id,
       password,
     });

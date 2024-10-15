@@ -1,7 +1,7 @@
 "use client";
-import { getUserInfo, updateProfile } from "@/lib/api/auth";
+import { updateProfile } from "@/lib/api/auth";
 import S from "@/styles/style.module.scss";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { ChangeEvent, useId, useRef, useState } from "react";
 import { toast } from "react-toastify";

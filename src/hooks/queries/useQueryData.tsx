@@ -2,7 +2,7 @@ import { getUserInfo } from "@/lib/api/auth";
 import { getLetter } from "@/lib/api/letter";
 import { useIsLoginActions, useIsLoginMode } from "@/shared/store/toggleStore";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -39,7 +39,7 @@ const useDataQueries = () => {
       setIsLoginMode(false);
       router.push("/");
     }
-  }, [error]);
+  }, [error, setIsLoginMode, router, queryClient]);
 
   // 로그인 상태 확인 및 초기 데이터 패칭 설정
   useEffect(() => {
